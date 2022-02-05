@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.hpp                                         :+:      :+:    :+:   */
+/*   Vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: daprovin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 17:05:40 by daprovin          #+#    #+#             */
-/*   Updated: 2022/02/02 01:11:08 by daprovin         ###   ########.fr       */
+/*   Updated: 2022/02/05 07:33:19 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <iostream>
 # include <memory>
+# include <stdexcept>
 
 template < class T, class Alloc = std::allocator<T> >
 class Vector
@@ -50,6 +51,38 @@ class Vector
 		size_type	capacity(void) const
 		{
 			return (_end - _elems);
+		}
+
+		size_type	max_size(void) const
+		{
+			return (_max_size);
+		}
+
+		void		resize(size_type n, value_type val = value_type())
+		{
+			while (n < size())					
+				pop_back();
+			while (n > size())
+				push_back(val);
+		}
+
+		bool		empty(void) const
+		{
+			if (size() == 0)
+				return true;
+			else
+				return false;
+		}
+
+		void		reserve(size_type n)
+		{
+			if (n > _max_size)	
+				throw std::length_error("Not enough space");
+			else
+			{
+				while (n > capacity())
+					reallocate(n);
+			}
 		}
 
 		//		========Modifiers========
@@ -92,11 +125,30 @@ class Vector
 			_end = _elems + newCapacity;
 		}
 
+		void	reallocate(size_type n)
+		{
+			size_t	oldCapacity = capacity();
+			size_t	newCapacity = n;
+
+			pointer	new_elems = _alloc.allocate(newCapacity);
+			if (_elems)
+			{
+				std::uninitialized_copy(_elems, _first_free, new_elems);
+				while (_elems != _first_free)
+					_alloc.destroy(--_first_free);
+				_alloc.deallocate(_elems, oldCapacity);
+			}
+			_elems = new_elems;
+			_first_free = _elems + oldCapacity;
+			_end = _elems + newCapacity;
+		}
+
 	private:
 		static std::allocator<T>	_alloc;
 		pointer			_first_free;
 		pointer			_end;
 		pointer			_elems;
+		size_type		_max_size = 1073741823;
 };
 
 template < typename T, typename Alloc >

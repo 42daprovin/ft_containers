@@ -1,9 +1,13 @@
-#include "vector.hpp"
+#include "Vector.hpp"
 
 int		main()
 {	
 	Vector<int>		v;
 	std::cout << "vec's size: " << v.size() << std::endl;
+	std::cout << "vec's capacity: " << v.capacity() << std::endl;
+	std::cout << "vec's max size: " << v.max_size() << std::endl;
+
+	v.reserve(100);
 	std::cout << "vec's capacity: " << v.capacity() << std::endl;
 
 	v.push_back(1);
@@ -36,6 +40,8 @@ int		main()
 	v.push_back(10);
 	std::cout << "vec's size: " << v.size() << std::endl;
 	std::cout << "vec's capacity: " << v.capacity() << std::endl;
+
+	v.resize(5);
 
 	for (size_t i = 0; i < v.size(); i++)
 	{
