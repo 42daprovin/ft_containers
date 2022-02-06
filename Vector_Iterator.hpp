@@ -36,8 +36,8 @@ class Iterator
 		Iterator<T>	&	operator--();
 		Iterator<T>		operator--(int);
 
-		T *		operator[](int	n);
-		T *		operator*();
+		T &		operator[](int	n);
+		T &		operator*();
 
 	private:
 		T		* _pointer;
@@ -132,13 +132,13 @@ Iterator<T>		Iterator<T>::operator--(int)
 }
 
 template < typename T >
-T *		Iterator<T>::operator[](int	n)
+T &		Iterator<T>::operator[](int	n)
 {
 	return *(this->_pointer + n);
 }
 
-templare < typename T >
-T *		Iterator<T>::operator*();
+template < typename T >
+T &		Iterator<T>::operator*()
 {
 	return *this->_pointer;
 }
