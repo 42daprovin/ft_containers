@@ -5,7 +5,7 @@
 # include <iterator>
 
 template < typename T >
-class Iterator
+class iterator
 {
 	public:
 		typedef	std::random_access_iterator_tag		iterator_category;
@@ -15,26 +15,26 @@ class Iterator
 		typedef	T&									reference;
 
 	public:
-		Iterator() : _pointer(nullptr) {}
-		Iterator(T * item) : _pointer(item) {}
-		~Iterator() {}
+		iterator() : _pointer(NULL) {}
+		iterator(T * item) : _pointer(item) {}
+		~iterator() {}
 
-		Iterator<T> &	operator=(const Iterator<T> & iter);
+		iterator<T> &	operator=(const iterator<T> & iter);
 
-		Iterator<T>		operator+(int n);
-		Iterator<T>		operator-(int n);
+		iterator<T>		operator+(int n);
+		iterator<T>		operator-(int n);
 
-		bool	operator==(const Iterator<T> & iter) const;
-		bool	operator!=(const Iterator<T> & iter) const;
-		bool	operator>=(const Iterator<T> & iter) const;
-		bool	operator<=(const Iterator<T> & iter) const;
-		bool	operator<(const Iterator<T> & iter) const;
-		bool	operator>(const Iterator<T> & iter) const;
+		bool	operator==(const iterator<T> & iter) const;
+		bool	operator!=(const iterator<T> & iter) const;
+		bool	operator>=(const iterator<T> & iter) const;
+		bool	operator<=(const iterator<T> & iter) const;
+		bool	operator<(const iterator<T> & iter) const;
+		bool	operator>(const iterator<T> & iter) const;
 
-		Iterator<T> &	operator++();
-		Iterator<T>		operator++(int);
-		Iterator<T>	&	operator--();
-		Iterator<T>		operator--(int);
+		iterator<T> &	operator++();
+		iterator<T>		operator++(int);
+		iterator<T>	&	operator--();
+		iterator<T>		operator--(int);
 
 		T &		operator[](int	n);
 		T &		operator*();
@@ -44,101 +44,103 @@ class Iterator
 
 };
 
+template < typename T > class const_iterator : iterator<const T> {};
+
 template < typename T >
-Iterator<T> &	Iterator<T>::operator=(const Iterator<T> & iter)
+iterator<T> &	iterator<T>::operator=(const iterator<T> & iter)
 {
 	this->_pointer = iter._pointer;
 	return (*this);
 }
 
 template < typename T >
-Iterator<T>		Iterator<T>::operator+(int n)
+iterator<T>		iterator<T>::operator+(int n)
 {
-	Iterator<T>		tmp(this->_pointer + n);	
+	iterator<T>		tmp(this->_pointer + n);	
 	return tmp;
 }
 
 template < typename T >
-Iterator<T>		Iterator<T>::operator-(int n)
+iterator<T>		iterator<T>::operator-(int n)
 {
-	Iterator<T>		tmp(this->_pointer - n);	
+	iterator<T>		tmp(this->_pointer - n);	
 	return tmp;
 }
 
 template < typename T >
-bool	Iterator<T>::operator==(const Iterator<T> & iter) const
+bool	iterator<T>::operator==(const iterator<T> & iter) const
 {
 	return	this->_pointer == iter._pointer;
 }
 
 template < typename T >
-bool	Iterator<T>::operator!=(const Iterator<T> & iter) const
+bool	iterator<T>::operator!=(const iterator<T> & iter) const
 {
 	return	this->_pointer != iter._pointer;
 }
 
 template < typename T >
-bool	Iterator<T>::operator>=(const Iterator<T> & iter) const
+bool	iterator<T>::operator>=(const iterator<T> & iter) const
 {
 	return	this->_pointer >= iter._pointer;
 }
 
 template < typename T >
-bool	Iterator<T>::operator<=(const Iterator<T> & iter) const
+bool	iterator<T>::operator<=(const iterator<T> & iter) const
 {
 	return	this->_pointer <= iter._pointer;
 }
 
 template < typename T >
-bool	Iterator<T>::operator<(const Iterator<T> & iter) const
+bool	iterator<T>::operator<(const iterator<T> & iter) const
 {
 	return	this->_pointer < iter._pointer;
 }
 
 template < typename T >
-bool	Iterator<T>::operator>(const Iterator<T> & iter) const
+bool	iterator<T>::operator>(const iterator<T> & iter) const
 {
 	return	this->_pointer > iter._pointer;
 }
 
 template < typename T >
-Iterator<T> &	Iterator<T>::operator++()
+iterator<T> &	iterator<T>::operator++()
 {
 	this->_pointer++;
 	return *this;
 }
 
 template < typename T >
-Iterator<T>		Iterator<T>::operator++(int)
+iterator<T>		iterator<T>::operator++(int)
 {
-	Iterator<T>		tmp = *this;
+	iterator<T>		tmp = *this;
 	this->_pointer++;
 	return tmp;
 }
 
 template < typename T >
-Iterator<T> &	Iterator<T>::operator--()
+iterator<T> &	iterator<T>::operator--()
 {
 	this->_pointer--;
 	return *this;
 }
 
 template < typename T >
-Iterator<T>		Iterator<T>::operator--(int)
+iterator<T>		iterator<T>::operator--(int)
 {
-	Iterator<T>		tmp = *this;
+	iterator<T>		tmp = *this;
 	this->_pointer--;
 	return tmp;
 }
 
 template < typename T >
-T &		Iterator<T>::operator[](int	n)
+T &		iterator<T>::operator[](int	n)
 {
 	return *(this->_pointer + n);
 }
 
 template < typename T >
-T &		Iterator<T>::operator*()
+T &		iterator<T>::operator*()
 {
 	return *this->_pointer;
 }

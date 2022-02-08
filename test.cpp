@@ -1,15 +1,10 @@
 #include "Vector_Iterator.hpp"
+#include "is_integral.hpp"
 #include <iostream>
 
 int		main()
 {
-	int		a = 3;
-	Iterator<int>	iter(&a);
-	Iterator<int>	test;
-
-	test = iter;
-
-	std::cout << (iter == test) << std::endl;
-	std::cout << (iter != test) << std::endl;
-
+	std::cout << std::boolalpha;	
+	std::cout << ft::is_integral<int>::value << std::endl;
+	std::cout << ft::is_integral<char>::value << std::endl;
 }
