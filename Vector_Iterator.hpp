@@ -15,7 +15,7 @@ namespace ft{
 				typedef	int									difference_type;
 				typedef	T*									pointer;
 				typedef	T&									reference;
-				/* typedef terator<const T>					const_iterator; */
+				typedef iterator<const T>					const_iterator;
 
 			public:
 				iterator() : _pointer(NULL) {}
@@ -23,31 +23,36 @@ namespace ft{
 				~iterator() {}
 
 				iterator<T> &	operator=(const iterator<T> & iter);
-
-				iterator<T>		operator+(int n);
-				iterator<T>		operator-(int n);
-
-				bool	operator==(const iterator<T> & iter) const;
-				bool	operator!=(const iterator<T> & iter) const;
-				bool	operator>=(const iterator<T> & iter) const;
-				bool	operator<=(const iterator<T> & iter) const;
-				bool	operator<(const iterator<T> & iter) const;
-				bool	operator>(const iterator<T> & iter) const;
+				iterator<T>		operator+(int n) const;
+				iterator<T>		operator-(int n) const;
 
 				iterator<T> &	operator++();
 				iterator<T>		operator++(int);
 				iterator<T>	&	operator--();
 				iterator<T>		operator--(int);
 
-				T &		operator[](int	n);
+				iterator<T> &	operator+=(difference_type n);
+				iterator<T> &	operator-=(difference_type n);
+
+				T &		operator[](int	n) const;
 				T &		operator*();
+				pointer	operator->() { return &(operator*()); }
+				
+
+				pointer		base() const { return _pointer; }
+
+				operator const_iterator() const 
+				{
+					const_iterator	tmp( _pointer);
+					return tmp;
+				}
 
 			private:
 				T		* _pointer;
 
 		};
 
-	template < typename T > class const_iterator : public iterator<const T> {};
+	/* template < typename T > class const_iterator : public iterator<const T> {}; */
 
 
 	template < typename T >
@@ -57,55 +62,106 @@ namespace ft{
 			return (*this);
 		}
 
+//.................................Member + & - .................................
+
 	template < typename T >
-		iterator<T>		iterator<T>::operator+(int n)
+		iterator<T>		iterator<T>::operator+(int n) const
 		{
 			iterator<T>		tmp(this->_pointer + n);	
 			return tmp;
 		}
 
 	template < typename T >
-		iterator<T>		iterator<T>::operator-(int n)
+		iterator<T>		iterator<T>::operator-(int n) const
 		{
 			iterator<T>		tmp(this->_pointer - n);	
 			return tmp;
 		}
 
+//.............................Advance & Retrocede...............................
+
 	template < typename T >
-		bool	iterator<T>::operator==(const iterator<T> & iter) const
+		iterator<T> &		iterator<T>::operator+=(iterator<T>::difference_type n)
 		{
-			return	this->_pointer == iter._pointer;
+			_pointer = _pointer + n;
+			return *this;
 		}
 
 	template < typename T >
-		bool	iterator<T>::operator!=(const iterator<T> & iter) const
+		iterator<T> &		iterator<T>::operator-=(iterator<T>::difference_type n)
 		{
-			return	this->_pointer != iter._pointer;
+			_pointer = _pointer - n;
+			return *this;
+		}
+
+//.............................relational operators..............................
+
+	template < typename T >
+		bool	operator==(const iterator<T> & lhs, const iterator<T> & rhs)
+		{
+			return	lhs.base() == rhs.base();
+		}
+	template < typename T, typename S>
+		bool	operator==(const iterator<T> & lhs, const iterator<S> & rhs)
+		{
+			return lhs.base() == rhs.base();
 		}
 
 	template < typename T >
-		bool	iterator<T>::operator>=(const iterator<T> & iter) const
+		bool	operator!=(const iterator<T> & lhs, const iterator<T> & rhs)
 		{
-			return	this->_pointer >= iter._pointer;
+			return	lhs.base() != rhs.base();
+		}
+	template < typename T, typename S>
+		bool	operator!=(const iterator<T> & lhs, const iterator<S> & rhs)
+		{
+			return lhs.base() != rhs.base();
 		}
 
 	template < typename T >
-		bool	iterator<T>::operator<=(const iterator<T> & iter) const
+		bool	operator<=(const iterator<T> & lhs, const iterator<T> & rhs)
 		{
-			return	this->_pointer <= iter._pointer;
+			return	lhs.base() <= rhs.base();
 		}
-
+	template < typename T, typename S>
+		bool	operator<=(const iterator<T> & lhs, const iterator<S> & rhs)
+		{
+			return lhs.base() <= rhs.base();
+		}
+	
 	template < typename T >
-		bool	iterator<T>::operator<(const iterator<T> & iter) const
+		bool	operator>=(const iterator<T> & lhs, const iterator<T> & rhs)
 		{
-			return	this->_pointer < iter._pointer;
+			return	lhs.base() >= rhs.base();
 		}
-
+	template < typename T, typename S>
+		bool	operator>=(const iterator<T> & lhs, const iterator<S> & rhs)
+		{
+			return lhs.base() >= rhs.base();
+		}
+	
 	template < typename T >
-		bool	iterator<T>::operator>(const iterator<T> & iter) const
+		bool	operator<(const iterator<T> & lhs, const iterator<T> & rhs) 
 		{
-			return	this->_pointer > iter._pointer;
+			return	lhs.base() < rhs.base();
 		}
+	template < typename T, typename S>
+		bool	operator<(const iterator<T> & lhs, const iterator<S> & rhs) 
+		{
+			return lhs.base() < rhs.base();
+		}
+	
+	template < typename T >
+		bool	operator>(const iterator<T> & lhs, const iterator<T> & rhs)
+		{
+			return	lhs.base() > rhs.base();
+		}
+	template < typename T, typename S>
+		bool	operator>(const iterator<T> & lhs, const iterator<S> & rhs)
+		{
+			return lhs.base() > rhs.base();
+		}
+//..........................Increase & Decrease....................................
 
 	template < typename T >
 		iterator<T> &	iterator<T>::operator++()
@@ -136,9 +192,10 @@ namespace ft{
 			this->_pointer--;
 			return tmp;
 		}
+//.......................Access..............................
 
 	template < typename T >
-		T &		iterator<T>::operator[](int	n)
+		T &		iterator<T>::operator[](int	n) const
 		{
 			return *(this->_pointer + n);
 		}
@@ -148,6 +205,7 @@ namespace ft{
 		{
 			return *this->_pointer;
 		}
+//...................... non-member + & - ................
 
 	template < typename T >
 		iterator<T>		operator+(int n, const iterator<T> & it)
@@ -160,8 +218,28 @@ namespace ft{
 		{
 			return (it - n);
 		}
-	//i need sumar dos iterators AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa
+	
+	template < typename T >
+		int		operator+(const iterator<T> & lhs, const iterator<T> & rhs)
+		{
+			return	lhs.base() + rhs.base();
+		}
+	template < typename T , typename S >
+		int		operator+(const iterator<T> & lhs, const iterator<S> & rhs)
+		{
+			return	lhs.base() + rhs.base();
+		}
 
+	template < typename T >
+		int		operator-(const iterator<T> & lhs, const iterator<T> & rhs)
+		{
+			return	lhs.base() - rhs.base();
+		}
+	template < typename T , typename S >
+		int		operator-(const iterator<T> & lhs, const iterator<S> & rhs)
+		{
+			return	lhs.base() - rhs.base();
+		}
 }
 
 #endif
