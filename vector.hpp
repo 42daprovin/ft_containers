@@ -6,7 +6,7 @@
 /*   By: daprovin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 17:05:40 by daprovin          #+#    #+#             */
-/*   Updated: 2022/02/10 00:24:03 by david            ###   ########.fr       */
+/*   Updated: 2022/02/10 15:11:52 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,7 +321,7 @@ namespace ft{
 
 //.........................................................Insert....................................................
 
-				iterator	insert(iterator position, const value_type & val) //idk if the return value is good
+				iterator	insert(iterator position, const value_type & val)
 				{
 					if (size() == capacity())
 					{
@@ -610,7 +610,12 @@ namespace ft{
 			return (rhs < lhs);	
 		}
 
-	//falta non-member swap
+	
+	template < class T, class Alloc >
+		void	swap(vector<T, Alloc> & x, vector<T, Alloc> & y)
+		{
+			x.swap(y);			
+		}
 
 }
 #endif
