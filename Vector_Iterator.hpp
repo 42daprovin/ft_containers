@@ -219,16 +219,16 @@ namespace ft{
 			return (it - n);
 		}
 	
-	template < typename T >
-		int		operator+(const iterator<T> & lhs, const iterator<T> & rhs)
-		{
-			return	lhs.base() + rhs.base();
-		}
-	template < typename T , typename S >
-		int		operator+(const iterator<T> & lhs, const iterator<S> & rhs)
-		{
-			return	lhs.base() + rhs.base();
-		}
+	/* template < typename T > */
+	/* 	int		operator+(const iterator<T> & lhs, const iterator<T> & rhs) */
+	/* 	{ */
+	/* 		return	lhs.base() + rhs.base(); */
+	/* 	} */
+	/* template < typename T , typename S > */
+	/* 	int		operator+(const iterator<T> & lhs, const iterator<S> & rhs) */
+	/* 	{ */
+	/* 		return	lhs.base() + rhs.base(); */
+	/* 	} */
 
 	template < typename T >
 		int		operator-(const iterator<T> & lhs, const iterator<T> & rhs)

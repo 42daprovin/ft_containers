@@ -6,7 +6,7 @@
 /*   By: daprovin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 17:05:40 by daprovin          #+#    #+#             */
-/*   Updated: 2022/02/09 20:56:14 by daprovin         ###   ########.fr       */
+/*   Updated: 2022/02/10 00:24:03 by david            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -609,6 +609,8 @@ namespace ft{
 		{
 			return (rhs < lhs);	
 		}
+
+	//falta non-member swap
 
 }
 #endif
