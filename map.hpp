@@ -7,6 +7,7 @@
 # include <iostream>
 # include "map_iterator.hpp"
 # include "iterator_traits.hpp"
+# include "reverse_iterator.hpp"
 
 namespace ft {
 
@@ -27,6 +28,8 @@ namespace ft {
 				typedef	class ft::m_iterator<value_type>					iterator;
 				typedef class ft::m_iterator<const value_type>				const_iterator;
 				typedef typename iterator_traits<iterator>::difference_type	difference_type;
+				typedef	ft::reverse_iterator<iterator>						reverse_iterator;
+				typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 				typedef size_t												size_type;
 				
 			private:
@@ -48,7 +51,9 @@ namespace ft {
 
 //........................................Capacity.....................................................
 
-				size_type	size() const { return _size ; }
+				size_type	size(void) const { return _size ; }
+				size_type	max_size(void) const { return node_allocator_type(_alloc).max_size() ; }
+				bool		empty(void) const { return _size == 0 ; }
 
 //.........................................Modifiers...................................................
 
@@ -74,14 +79,59 @@ namespace ft {
 
 //.........................................Iterators................................................
 
-				iterator	begin()
+				iterator	begin(void)
 				{
 					ft::node<value_type> * n = most_left(_node);
 					iterator	it(n);
 					return it;
 				}
 
-				iterator	end()
+				const_iterator	begin(void) const
+				{
+					ft::node<value_type> * n = most_left(_node);
+					iterator	it(n);
+					return it;
+				}
+
+				iterator	end(void)
+				{
+					ft::node<value_type> * n = most_right(_node);
+					iterator	it(n);
+					++it;
+					return it;
+				}
+
+				const_iterator	end(void) const
+				{
+					ft::node<value_type> * n = most_right(_node);
+					iterator	it(n);
+					++it;
+					return it;
+				}
+
+				reverse_iterator	rbegin(void)
+				{
+					ft::node<value_type> * n = most_left(_node);
+					reverse_iterator	it(n);
+					return it;
+				}
+				
+				const_reverse_iterator	rbegin(void) const
+				{
+					ft::node<value_type> * n = most_left(_node);
+					reverse_iterator	it(n);
+					return it;
+				}
+				
+				reverse_iterator	rend(void)
+				{
+					ft::node<value_type> * n = most_right(_node);
+					iterator	it(n);
+					++it;
+					return it;
+				}
+
+				const_reverse_iterator	rend(void) const
 				{
 					ft::node<value_type> * n = most_right(_node);
 					iterator	it(n);

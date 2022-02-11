@@ -18,14 +18,17 @@ int		main()
 	ft::map<int, char>::iterator	first = mymap.begin();
 	ft::map<int, char>::iterator	last = mymap.end();
 
-	std::cout << first->first << std::endl;
-	++first;
-	std::cout << first->first << std::endl;
-	++first;
-	std::cout << first->first << std::endl;
-	++first;
-	std::cout << first->first << std::endl;
-	++first;
+	std::cout << "first[2].first: " << first[2].first << std::endl;
+
+	for ( ; first < last ; ++first )
+		std::cout << first->first << std::endl;
+	/* ++first; */
+	/* std::cout << first->first << std::endl; */
+	/* ++first; */
+	/* std::cout << first->first << std::endl; */
+	/* ++first; */
+	/* std::cout << first->first << std::endl; */
+	/* ++first; */
 
 	std::cout << mymap[3] << std::endl;
 	/* std::cout << first->first << std::endl; */
