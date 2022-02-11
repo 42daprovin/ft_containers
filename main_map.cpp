@@ -1,4 +1,5 @@
 #include "map.hpp"
+#include <map>
 
 int		main()
 {
@@ -13,15 +14,26 @@ int		main()
 	std::cout << mymap.insert(p2).first->first << std::endl;
 	std::cout << mymap.insert(p3).first->first << std::endl;
 	std::cout << mymap.insert(p3).first->first << std::endl;
+	std::cout << std::endl << std::endl;
 	mymap.insert(p4);
 
 	ft::map<int, char>::iterator	first = mymap.begin();
 	ft::map<int, char>::iterator	last = mymap.end();
 
-	std::cout << "first[2].first: " << first[2].first << std::endl;
 
-	for ( ; first < last ; ++first )
-		std::cout << first->first << std::endl;
+	/* std::cout << "begin: "<< first->first << std::endl; */
+	/* std::cout << last->second << std::endl; */
+
+	/* last = mymap.end(); */
+	/* std::cout << last->first << std::endl; */
+	/* std::cout << last->second << std::endl; */
+
+	/* for ( ; first != last ; ++first ) */
+		/* std::cout << first->first << std::endl; */
+
+	/* for ( ; last != first ; --last ) */
+		/* std::cout << first->first << std::endl; */
+
 	/* ++first; */
 	/* std::cout << first->first << std::endl; */
 	/* ++first; */
@@ -30,10 +42,10 @@ int		main()
 	/* std::cout << first->first << std::endl; */
 	/* ++first; */
 
-	std::cout << mymap[3] << std::endl;
+	/* std::cout << mymap[3] << std::endl; */
 	/* std::cout << first->first << std::endl; */
 	/* ++first; */
-	std::cout << mymap.size() << std::endl;
+	/* std::cout << mymap.size() << std::endl; */
 
 	/* std::cout << most_left(mymap._node)->data.first << std::endl; */
 	/* std::cout << mymap._node->data.first << std::endl; */

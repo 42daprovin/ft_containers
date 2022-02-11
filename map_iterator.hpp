@@ -43,13 +43,12 @@ namespace ft {
 		class m_iterator
 		{
 			public:
-				typedef std::random_access_iterator_tag			iterator_category;
+				typedef std::bidirectional_iterator_tag			iterator_category;
 				typedef T										value_type;
 				typedef ptrdiff_t								difference_type;
 				typedef T*										pointer;
 				typedef T&										reference;
 				typedef m_iterator<const T>						const_iterator;
-				/* typedef m_iterator< ft::node<const T> >			const_iterator; */
 
 			public:
 				m_iterator() : _data(NULL) {}
@@ -57,22 +56,22 @@ namespace ft {
 				~m_iterator() {}
 
 				m_iterator<T> &		operator=(const m_iterator<T> & iter);
-				m_iterator<T>		operator+(int n) const;
-				m_iterator<T>		operator-(int n) const;
 
 				m_iterator<T> &		operator++();
 				m_iterator<T>		operator++(int);
 				m_iterator<T> &		operator--();
 				m_iterator<T>		operator--(int);
 
-				/* iterator<T> &		operator+=(difference_type n); */
-				/* iterator<T> &		operator-=(difference_type n); */
-
-				reference	operator[](int n) const;	
 				reference	operator*();
 				pointer		operator->() { return &(operator*()); }
 
 				ft::node<value_type> *		base() const { return _data; }
+
+				operator const_iterator() const
+				{
+					const_iterator tmp(_data);
+					return tmp;
+				}
 
 			private:
 				ft::node<value_type> *	_data;
@@ -87,39 +86,13 @@ namespace ft {
 			return this->_data->data; //nombres caca cambiar
 		}
 
-	template < class T >
-		typename m_iterator<T>::reference	m_iterator<T>::operator[](int n) const
-		{
-			return *(*this + n);
-		}
-
-//................................. Operator =, + & -..................................
+//................................. Operator = ..................................
 
 	template < class T >
 		m_iterator<T> &		m_iterator<T>::operator=(const m_iterator<T> & iter)
 		{
 			this->_data = iter._data;
 			return (*this);
-		}
-
-	template < class T >
-		m_iterator<T>		m_iterator<T>::operator+(int n) const
-		{
-			m_iterator<T>		tmp(this->_data);
-
-			for (int i = 0 ; i < n ; i++)
-				++tmp;
-			return tmp;
-		}
-
-	template < class T >
-		m_iterator<T>		m_iterator<T>::operator-(int n) const
-		{
-			m_iterator<T>		tmp(this->_data);
-
-			for (int i = 0 ; i < n ; i++)
-				--tmp;
-			return tmp;
 		}
 
 //............................... Operator ++ & -- ..............................
@@ -213,19 +186,6 @@ namespace ft {
 		{
 			return lhs.base() == rhs.base();
 		}
-	/* template < class T > */
-	/* 	bool	operator<(const m_iterator<T> & lhs, const m_iterator<T> & rhs) */
-	/* 	{ */
-	/* 		if (lhs.base()->data.first < rhs.base()->data.first) */
-	/* 			return true; */
-	/* 		return false; */
-	/* 	} */
-	/* template < class T, class S> */
-	/* 	bool	operator<(const m_iterator<T> & lhs, const m_iterator<S> & rhs) */
-	/* 	{ */
-	/* 		return lhs.base()->data.first < rhs.base()->data.first ; */
-	/* 	} */
-
 }
 
 #endif

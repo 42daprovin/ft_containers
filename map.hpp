@@ -38,7 +38,11 @@ namespace ft {
 
 			public:
 
-				explicit map(const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type()) : _alloc(alloc), _comp(comp), _node(NULL), _size(0) {}
+				explicit map(const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type()) : _alloc(alloc), _comp(comp), _node(NULL), _size(0)
+			{ 
+				_hipo_end = node_allocator_type(_alloc).allocate(1);
+				node_allocator_type(_alloc).construct(_hipo_end, std::make_pair(key_type(), mapped_type())); 
+			}
 
 				template < class InputIterator >
 					map(InputIterator first, InputIterator last, const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type()) : _alloc(alloc), _comp(comp), _size(0)
@@ -68,6 +72,8 @@ namespace ft {
 					if (_node == NULL)
 					{
 						_node = tmp;
+						_node->parent = _hipo_end;
+						_hipo_end->left = _node;
 						_size++;
 						return std::make_pair(iterator(_node), false) ;
 					}
@@ -76,6 +82,16 @@ namespace ft {
 						_size++;
 					return ret;
 				}
+
+				/* std::pair<iterator, bool>	insert(iterator position, const value_type & val) */
+				/* { */
+				/* 	iterator	tmp = position; */
+				/* 	++tmp; */
+
+				/* 	if (tmp == NULL) */
+
+				/* 	if (_comp(position->first, )) */
+				/* } */
 
 //.........................................Iterators................................................
 
@@ -183,6 +199,7 @@ namespace ft {
 				Alloc		_alloc;
 				Compare		_comp;
 				node_type *	_node;	
+				node_type * _hipo_end;
 				size_t		_size;
 
 		};
