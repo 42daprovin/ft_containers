@@ -18,6 +18,7 @@ namespace ft {
 			node<value_type> *	left;
 			node<value_type> *	right;
 			value_type 			data;	
+
 		};
 
 	template < class T >
@@ -34,7 +35,7 @@ namespace ft {
 		{
 			if (_node->right != NULL)
 				return most_right(_node->right);
-			else
+else
 				return _node;
 		}
 
@@ -52,7 +53,7 @@ namespace ft {
 
 			public:
 				m_iterator() : _data(NULL) {}
-				m_iterator(ft::node<T> * item) : _data(item) {}
+				m_iterator(ft::node<T> * item) { this->_data = item; }
 				~m_iterator() {}
 
 				m_iterator<T> &		operator=(const m_iterator<T> & iter);
@@ -77,6 +78,45 @@ namespace ft {
 				ft::node<value_type> *	_data;
 				
 		};
+
+	/* template < class const T > */
+	/* 	class const_m_iterator */
+	/* 	{ */
+	/* 		public: */
+	/* 			typedef std::bidirectional_iterator_tag			iterator_category; */
+	/* 			typedef T										value_type; */
+	/* 			typedef ptrdiff_t								difference_type; */
+	/* 			typedef const T*										pointer; */
+	/* 			typedef const T&										reference; */
+
+	/* 		public: */
+	/* 			const_m_iterator() : _data(NULL) {} */
+	/* 			const_m_iterator(ft::node<T> const  * item) : _data(item) {} */
+	/* 			/1* const_m_iterator(ft::node<const T> * item) : _data(item) {} *1/ */
+	/* 			~const_m_iterator() {} */
+
+	/* 			const_m_iterator<T> &		operator=(const const_m_iterator<T> & iter); */
+
+	/* 			const_m_iterator<T> &		operator++(); */
+	/* 			const_m_iterator<T>		operator++(int); */
+	/* 			const_m_iterator<T> &		operator--(); */
+	/* 			const_m_iterator<T>		operator--(int); */
+
+	/* 			reference	operator*(); */
+	/* 			pointer		operator->() { return &(operator*()); } */
+
+	/* 			ft::node<value_type> *		base() const { return _data; } */
+
+	/* 			operator const_iterator() const */
+	/* 			{ */
+	/* 				const_iterator tmp(_data); */
+	/* 				return tmp; */
+	/* 			} */
+
+	/* 		private: */
+	/* 			const ft::node<value_type> *	_data; */
+				
+	/* 	} */
 
 //..................................Access.......................................
 
@@ -117,7 +157,7 @@ namespace ft {
 			}
 			else
 			{
-				this->_data = most_right(tmp)->right;
+				this->_data = most_right(tmp)->right; //creo que no hace falta, nunca entramos aqui;
 				return *this;
 			}
 		}
@@ -151,7 +191,8 @@ namespace ft {
 			}
 			else
 			{
-				this->_data = most_left(tmp)->left;
+				/* this->_data = most_left(tmp)->left; */
+				this->_data = tmp;		//seria devolver el centinel, no hay muchas pruebas al respecto;
 				return *this;
 			}
 		}
@@ -164,7 +205,7 @@ namespace ft {
 			return tmp;
 		}
 
-//.........................Relational Operators.......................................
+//..............................Relational Operators.......................................
 
 	template < class T >
 		bool	operator!=(const m_iterator<T> & lhs, const m_iterator<T> & rhs)

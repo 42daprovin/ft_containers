@@ -38,6 +38,8 @@ namespace ft {
 
 			public:
 
+//......................................Constructors.................................................
+
 				explicit map(const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type()) : _alloc(alloc), _comp(comp), _node(NULL), _size(0)
 			{ 
 				_hipo_end = node_allocator_type(_alloc).allocate(1);
@@ -51,6 +53,30 @@ namespace ft {
 
 				map (const map & x)
 				{
+				}
+
+				~map(void)
+				{
+					clear();
+					node_allocator_type(_alloc).destroy(_hipo_end);
+					node_allocator_type(_alloc).deallocate(_hipo_end, 1);
+				}
+
+//........................................Operator =..................................................
+
+				map &	operator=(const map & x)
+				{
+					int				x_size = x.size();
+					const_iterator	first = x.begin();
+					/* const_iterator first = begin(); */
+
+					clear();
+					for (size_t i = 0 ; i < (x_size / 2) ; i++)
+						++first;
+					insert(*first);
+					insert(x.begin(), x.end());
+
+					return *this;
 				}
 
 //........................................Capacity.....................................................
@@ -83,15 +109,62 @@ namespace ft {
 					return ret;
 				}
 
-				/* std::pair<iterator, bool>	insert(iterator position, const value_type & val) */
-				/* { */
-				/* 	iterator	tmp = position; */
-				/* 	++tmp; */
+				iterator		insert(iterator position, const value_type & val)
+				{
+					iterator	tmp = position;
+					++tmp;
 
-				/* 	if (tmp == NULL) */
+					if (tmp.base() == _hipo_end)
+						return insert(val).first;
+					else if (position->first < val.first && val.first < tmp->first)
+					{
+						node_type * in_node;
 
-				/* 	if (_comp(position->first, )) */
-				/* } */
+						in_node = node_allocator_type(_alloc).allocate(1);
+						node_allocator_type(_alloc).construct(in_node, val);
+						_size++;
+						return insert_node(in_node, position.base()).first;	
+					}
+					else
+						return insert(val).first;
+
+				}
+
+				template < class InputIterator>
+					void		insert(InputIterator first, InputIterator last)
+					{
+						for ( ; first != last; ++first)
+							insert(*first);
+					}
+
+				void	clear()
+				{
+					if (_node == NULL)
+						return ;
+					node_type * tmp = NULL;
+					_node = ft::most_left(_node);
+
+					while (_node != _hipo_end)
+					{
+						if (_node->right == NULL)
+						{
+							tmp = _node;
+							_node = _node->parent;
+							if (_node->right == tmp)
+								_node->right = NULL;
+							if (_node->left == tmp)
+								_node->left = NULL;
+							node_allocator_type(_alloc).destroy(tmp);
+							node_allocator_type(_alloc).deallocate(tmp, 1);
+							tmp = NULL;
+						}
+						else
+							_node = ft::most_left(_node->right);
+					}
+					_node = NULL;
+					_size = 0;
+				}
+
 
 //.........................................Iterators................................................
 
@@ -104,9 +177,10 @@ namespace ft {
 
 				const_iterator	begin(void) const
 				{
-					ft::node<value_type> * n = most_left(_node);
-					iterator	it(n);
-					return it;
+					/* ft::node<value_type> * n = most_left(_node); */
+					/* iterator	it(n); */
+					/* return it; */
+					return most_left(_node) ;
 				}
 
 				iterator	end(void)
@@ -169,7 +243,11 @@ namespace ft {
 				std::pair<iterator, bool>	insert_node(node_type * in_node, node_type * cmp_node)
 				{
 					if (in_node->data.first == cmp_node->data.first)
+					{
+						node_allocator_type(_alloc).destroy(in_node);
+						node_allocator_type(_alloc).deallocate(in_node, 1);
 						return std::make_pair(iterator(cmp_node), false) ;
+					}
 					if (_comp(in_node->data.first, cmp_node->data.first))	
 					{
 						if (cmp_node->left)
