@@ -1,13 +1,14 @@
 #include "map.hpp"
+#include "algorithm.hpp"
 #include <map>
 
 int		main()
 {
 	ft::map<int, char>		mymap;
-	std::pair<int, char>	p(1, 'a');
-	std::pair<int, char>	p2(3, 'b');
-	std::pair<int, char>	p3(0, 'c');
-	std::pair<int, char>	p4(2, 'd');
+	ft::pair<int, char>	p(1, 'a');
+	ft::pair<int, char>	p2(3, 'b');
+	ft::pair<int, char>	p3(0, 'c');
+	ft::pair<int, char>	p4(2, 'd');
 
 
 	mymap.insert(p);
@@ -24,11 +25,46 @@ int		main()
 	ft::map<int, char>		mymap_2;
 	mymap_2 = mymap;
 
-	/* ft::map<int, char>::iterator	first_2 = mymap_2.begin(); */
-	/* ft::map<int, char>::iterator	last_2 = mymap_2.end(); */
+	ft::map<int, char>::iterator	first_2 = mymap_2.begin();
+	ft::map<int, char>::iterator	last_2 = mymap_2.end();
 
-	/* for ( ; first_2 != last_2 ; ++first_2 ) */
-	/* 	std::cout << first_2->first << std::endl; */
+	for ( ; first_2 != last_2 ; ++first_2 )
+		std::cout << first_2->first << std::endl;
+
+	++first;
+	mymap.erase(first);
+
+	first = mymap.begin();
+	last = mymap.end();
+
+	for ( ; first != last ; ++first )
+		std::cout << first->first << std::endl;
+
+	std::cout << "==========Erase cplusplus test==========" << std::endl << std::endl;
+	{
+		ft::map<char,int> mymap;
+		ft::map<char,int>::iterator it;
+
+		// insert some values:
+		mymap['a']=10;
+		mymap['b']=20;
+		mymap['c']=30;
+		mymap['d']=40;
+		mymap['e']=50;
+		mymap['f']=60;
+
+		it=mymap.find('b');
+		mymap.erase (it);                   // erasing by iterator
+
+		mymap.erase ('c');                  // erasing by key
+
+		it=mymap.find ('e');
+		mymap.erase ( it, mymap.end() );    // erasing by range
+
+		// show content:
+		for (it=mymap.begin(); it!=mymap.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+	}
 
 	/* std::cout << "begin: "<< first->first << std::endl; */
 	/* std::cout << last->second << std::endl; */
