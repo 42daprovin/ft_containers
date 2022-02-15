@@ -298,6 +298,33 @@ namespace ft {
 					_size = 0;
 				}
 
+				void	swap(map & x)
+				{
+					Alloc		tmp_alloc;
+					Compare		tmp_comp;
+					node_type *	tmp_node;	
+					node_type * tmp_hipo_end;
+					size_t		tmp_size;
+
+					tmp_alloc = this->_alloc;
+					tmp_comp = this->_comp;
+                    tmp_node = this->_node; 
+					tmp_hipo_end = this->_hipo_end;
+					tmp_size = this->_size;
+
+					this->_alloc = x._alloc;
+					this->_comp = x._comp;
+					this->_node = x._node;
+					this->_hipo_end = x._hipo_end;
+					this->_size = x._size;
+
+					x._alloc = tmp_alloc;
+					x._comp = tmp_comp;
+					x._node = tmp_node;
+					x._hipo_end = tmp_hipo_end;
+					x._size = tmp_size;
+				}
+
 //........................................Operations...............................................
 
 				iterator	find(const key_type & k)
@@ -324,6 +351,110 @@ namespace ft {
 							return first;
 					}
 					return last;
+				}
+
+				size_type	count(const key_type & k) const
+				{
+					iterator	pos = find(k);	
+
+					if (pos == end())
+						return 0;
+					else
+						return 1;
+				}
+
+				iterator	lower_bound(const key_type & k)
+				{
+					iterator	pos = find(k);	
+
+					if (pos != end())
+						return pos;
+
+					iterator	first = begin();
+					iterator	last = end();
+
+					for ( ; first != last ; ++first )
+					{
+						if (_comp(k, first->first))
+							return first;
+					}
+					return first;
+				}
+
+				const_iterator	lower_bound(const key_type & k) const
+				{
+					iterator	pos = find(k);	
+
+					if (pos != end())
+						return pos;
+
+					iterator	first = begin();
+					iterator	last = end();
+
+					for ( ; first != last ; ++first )
+					{
+						if (_comp(k, first->first))
+							return first;
+					}
+					return first;
+				}
+
+				iterator	upper_bound(const key_type & k)
+				{
+					iterator pos = find(k);
+
+					if (pos != end())
+					{
+						++pos;
+						return pos;
+					}
+
+					iterator	first = begin();
+					iterator	last = end();
+
+					for ( ; first != last ; ++first )
+					{
+						if (_comp(k, first->first))
+							return first;
+					}
+					return first;
+				}
+
+				const_iterator	upper_bound(const key_type & k) const
+				{
+					iterator pos = find(k);
+
+					if (pos != end())
+					{
+						++pos;
+						return pos;
+					}
+
+					iterator	first = begin();
+					iterator	last = end();
+
+					for ( ; first != last ; ++first )
+					{
+						if (_comp(k, first->first))
+							return first;
+					}
+					return first;
+				}
+
+				pair<iterator, iterator>	equal_range(const key_type & k)
+				{
+					iterator	first = lower_bound(k);
+					iterator	second = upper_bound(k);
+
+					return ft::make_pair(first, second);
+				}
+
+				pair<const_iterator, const_iterator>	equal_range(const key_type & k) const
+				{
+					const_iterator	first = lower_bound(k);
+					const_iterator	second = upper_bound(k);
+
+					return ft::make_pair(first, second);
 				}
 
 //.........................................Observers................................................
@@ -397,6 +528,13 @@ namespace ft {
 				mapped_type &	operator[](const key_type & k)
 				{
 					return  (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second ;
+				}
+
+//....................................Allocator.....................................................
+
+				allocator_type	get_allocator() const
+				{
+					return _alloc;
 				}
 
 //....................................Insert aux-function...........................................
