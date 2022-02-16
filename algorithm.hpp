@@ -33,6 +33,30 @@ namespace ft{
 			return (first2 != last2);
 		}
 
+	template < class InputIterator1, class InputIterator2 >
+		bool	equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
+		{
+			while (first1 != last1)
+			{
+				if (!(*first1 == *first2))
+					return false;
+				++first1; ++first2;
+			}
+			return true;
+		}
+
+	template < class InputIterator1, class InputIterator2, class BinaryPredicate >
+		bool	equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, BinaryPredicate pred)
+		{
+			while (first1 != last1)
+			{
+				if (!pred(*first1, *first2))
+					return false;
+				++first1; ++first2;
+			}
+			return true;
+		}
+
 	template < class T1, class T2 >
 		class pair
 		{
@@ -70,6 +94,29 @@ namespace ft{
 			return (pair<T1, T2>(x, y));
 		}
 
+	template <class T1, class T2>
+		bool operator==(const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
+		{ return lhs.first==rhs.first && lhs.second==rhs.second; }
+
+	template <class T1, class T2>
+		bool operator!=(const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
+		{ return !(lhs==rhs); }
+
+	template <class T1, class T2>
+		bool operator<(const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
+		{ return lhs.first<rhs.first || (!(rhs.first<lhs.first) && lhs.second<rhs.second); }
+
+	template <class T1, class T2>
+		bool operator<=(const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
+		{ return !(rhs<lhs); }
+
+	template <class T1, class T2>
+		bool operator>(const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
+		{ return rhs<lhs; }
+
+	template <class T1, class T2>
+		bool operator>=(const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
+		{ return !(lhs<rhs); }
 
 }
 

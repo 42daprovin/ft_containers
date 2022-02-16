@@ -52,7 +52,7 @@ namespace ft {
 						}
 
 				};
-				
+
 			private:
 				typedef typename ft::node<value_type>					node_type;
 				typedef	typename allocator_type::template rebind<node_type>::other	node_allocator_type; //use: node_allocator_type(_alloc).allocate/destroy/construct......
@@ -64,16 +64,39 @@ namespace ft {
 				explicit map(const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type()) : _alloc(alloc), _comp(comp), _node(NULL), _size(0)
 			{ 
 				_hipo_end = node_allocator_type(_alloc).allocate(1);
-				node_allocator_type(_alloc).construct(_hipo_end, ft::make_pair(key_type(), mapped_type())); 
+				node_allocator_type(_alloc).construct(_hipo_end, value_type(key_type(128), mapped_type()));
+				_hipo_begin = node_allocator_type(_alloc).allocate(1);
+				node_allocator_type(_alloc).construct(_hipo_begin, value_type(key_type(42), mapped_type()));
+				_hipo_begin->left = NULL;
+				_hipo_begin->right =  _hipo_end;
+				_hipo_end->parent = _hipo_begin;
 			}
 
 				template < class InputIterator >
-					map(InputIterator first, InputIterator last, const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type()) : _alloc(alloc), _comp(comp), _size(0)
+					map(InputIterator first, InputIterator last, const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type()) : _alloc(alloc), _comp(comp), _node(NULL), _size(0)
 				{
+					_hipo_end = node_allocator_type(_alloc).allocate(1);
+					node_allocator_type(_alloc).construct(_hipo_end, value_type(key_type(), mapped_type())); 
+					_hipo_begin = node_allocator_type(_alloc).allocate(1);
+					node_allocator_type(_alloc).construct(_hipo_begin, value_type(key_type(), mapped_type()));
+					_hipo_begin->left = NULL;
+					_hipo_begin->right =  _hipo_end;
+					_hipo_end->parent = _hipo_begin;
+					insert(first, last);
 				}
 
-				map (const map & x)
+				map (const map & x) : _node(NULL), _size(0)
 				{
+					_hipo_end = node_allocator_type(_alloc).allocate(1);
+					node_allocator_type(_alloc).construct(_hipo_end, value_type(key_type(), mapped_type())); 
+					_hipo_begin = node_allocator_type(_alloc).allocate(1);
+					node_allocator_type(_alloc).construct(_hipo_begin, value_type(key_type(), mapped_type()));
+					_hipo_begin->left = NULL;
+					_hipo_begin->right =  _hipo_end;
+					_hipo_end->parent = _hipo_begin;
+					this->_alloc = x.get_allocator();
+					this->_comp = x.key_comp();
+					*this = x;
 				}
 
 				~map(void)
@@ -87,10 +110,14 @@ namespace ft {
 
 				map &	operator=(const map & x)
 				{
-					int				x_size = x.size();
+					size_t				x_size = x.size();
 					const_iterator		first = x.begin();
 
 					clear();
+
+					if (x_size == 0)
+						return *this;
+
 					for (size_t i = 0 ; i < (x_size / 2) ; i++)
 						++first;
 					insert(*first);
@@ -180,17 +207,27 @@ namespace ft {
 						else
 							position.base()->parent->right = next;
 
-						next->parent->left = next->right;
-						if (next->right)
-							next->right->parent = next->parent;
+						if (next != position.base()->right)
+						{
+							next->parent->left = next->right;
+							if (next->right)
+								next->right->parent = next->parent;
 
-						next->parent = position.base()->parent;
+							next->parent = position.base()->parent;
 
-						next->right = position.base()->right;
-						position.base()->right->parent = next;
+							next->right = position.base()->right;
+							position.base()->right->parent = next;
 
-						next->left = position.base()->left;
-						position.base()->left->parent = next;
+							next->left = position.base()->left;
+							position.base()->left->parent = next;
+						}
+						else
+						{
+							next->parent = position.base()->parent;
+
+							next->left = position.base()->left;	
+							position.base()->left->parent = next;
+						}
 
 						if (position.base() == _node)
 							_node = next;
@@ -234,7 +271,7 @@ namespace ft {
 						_node->parent = _hipo_end;
 						_hipo_end->left = _node;
 						_size++;
-						return ft::make_pair(iterator(_node), false) ;
+						return ft::make_pair(iterator(_node), true) ;
 					}
 					ret = insert_node(tmp, _node);
 					if (ret.second)
@@ -247,9 +284,11 @@ namespace ft {
 					iterator	tmp = position;
 					++tmp;
 
-					if (tmp.base() == _hipo_end)
+					if (position.base() == _hipo_end)
 						return insert(val).first;
-					else if (position->first < val.first && val.first < tmp->first)
+					else if (tmp.base() == _hipo_end)
+						return insert(val).first;
+					else if (_comp(position->first, val.first) && _comp(val.first, tmp->first))
 					{
 						node_type * in_node;
 
@@ -294,6 +333,7 @@ namespace ft {
 						else
 							_node = ft::most_left(_node->right);
 					}
+					_hipo_end->left = NULL;
 					_node = NULL;
 					_size = 0;
 				}
@@ -342,8 +382,8 @@ namespace ft {
 
 				const_iterator	find(const key_type & k) const
 				{
-					iterator	first = begin();
-					iterator	last = end();
+					const_iterator	first = begin();
+					const_iterator	last = end();
 
 					for ( ; first != last ; ++first)
 					{
@@ -355,7 +395,7 @@ namespace ft {
 
 				size_type	count(const key_type & k) const
 				{
-					iterator	pos = find(k);	
+					const_iterator	pos = find(k);	
 
 					if (pos == end())
 						return 0;
@@ -383,13 +423,13 @@ namespace ft {
 
 				const_iterator	lower_bound(const key_type & k) const
 				{
-					iterator	pos = find(k);	
+					const_iterator	pos = find(k);	
 
 					if (pos != end())
 						return pos;
 
-					iterator	first = begin();
-					iterator	last = end();
+					const_iterator	first = begin();
+					const_iterator	last = end();
 
 					for ( ; first != last ; ++first )
 					{
@@ -422,7 +462,7 @@ namespace ft {
 
 				const_iterator	upper_bound(const key_type & k) const
 				{
-					iterator pos = find(k);
+					const_iterator pos = find(k);
 
 					if (pos != end())
 					{
@@ -430,8 +470,8 @@ namespace ft {
 						return pos;
 					}
 
-					iterator	first = begin();
-					iterator	last = end();
+					const_iterator	first = begin();
+					const_iterator	last = end();
 
 					for ( ; first != last ; ++first )
 					{
@@ -461,10 +501,22 @@ namespace ft {
 
 				key_compare		key_comp() const { return _comp ; }
 
+				value_compare	value_comp() const
+				{
+					value_compare	ret(_comp);
+
+					return ret;
+				}
+
 //.........................................Iterators................................................
 
 				iterator	begin(void)
 				{
+					if (_size == 0)
+					{
+						iterator it(_hipo_end);
+						return it;
+					}
 					ft::node<value_type> * n = most_left(_node);
 					iterator	it(n);
 					return it;
@@ -472,6 +524,11 @@ namespace ft {
 
 				const_iterator	begin(void) const
 				{
+					if (_size == 0)
+					{
+						const_iterator it(_hipo_end);
+						return it;
+					}
 					const ft::node<value_type> * n = most_left(_node);
 					const_iterator	it(n);
 					return it;
@@ -479,6 +536,11 @@ namespace ft {
 
 				iterator	end(void)
 				{
+					if (_size == 0)
+					{
+						iterator it(_hipo_end);
+						return it;
+					}
 					ft::node<value_type> * n = most_right(_node);
 					iterator	it(n);
 					++it;
@@ -487,6 +549,11 @@ namespace ft {
 
 				const_iterator	end(void) const
 				{
+					if (_size == 0)
+					{
+						const_iterator it(_hipo_end);
+						return it;
+					}
 					const ft::node<value_type> * n = most_right(_node);
 					const_iterator	it(n);
 					++it;
@@ -495,31 +562,31 @@ namespace ft {
 
 				reverse_iterator	rbegin(void)
 				{
-					ft::node<value_type> * n = most_left(_node);
+					ft::node<value_type> * n = most_right(_node);
 					reverse_iterator	it(n);
+					--it;
 					return it;
 				}
 				
 				const_reverse_iterator	rbegin(void) const
 				{
-					ft::node<value_type> * n = most_left(_node);
-					reverse_iterator	it(n);
+					ft::node<value_type> * n = most_right(_node);
+					const_reverse_iterator	it(n);
+					--it;
 					return it;
 				}
 				
 				reverse_iterator	rend(void)
 				{
-					ft::node<value_type> * n = most_right(_node);
-					iterator	it(n);
-					++it;
+					ft::node<value_type> * n = most_left(_node);
+					reverse_iterator	it(n);
 					return it;
 				}
 
 				const_reverse_iterator	rend(void) const
 				{
-					ft::node<value_type> * n = most_right(_node);
-					iterator	it(n);
-					++it;
+					ft::node<value_type> * n = most_left(_node);
+					const_reverse_iterator	it(n);
 					return it;
 				}
 
@@ -579,10 +646,49 @@ namespace ft {
 				Compare		_comp;
 				node_type *	_node;	
 				node_type * _hipo_end;
+				node_type *	_hipo_begin;
 				size_t		_size;
 
 		};
-	
+
+	template < class Key, class T, class Compare, class Alloc >
+		bool operator==(const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
+		{
+			if (lhs.size() != rhs.size())
+				return false;
+			else
+				return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+		}
+
+	template < class Key, class T, class Compare, class Alloc >
+		bool operator<(const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
+		{
+			return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		}
+		
+	template < class Key, class T, class Compare, class Alloc >
+		bool operator!=(const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
+		{
+			return (!(lhs == rhs));
+		}
+
+	template < class Key, class T, class Compare, class Alloc >
+		bool operator<=(const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
+		{
+			return (!(rhs < lhs));
+		}
+
+	template < class Key, class T, class Compare, class Alloc >
+		bool operator>=(const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
+		{
+			return (!(lhs < rhs));
+		}
+
+	template < class Key, class T, class Compare, class Alloc >
+		bool operator>(const map<Key, T, Compare, Alloc> & lhs, const map<Key, T, Compare, Alloc> & rhs)
+		{
+			return (rhs < lhs);
+		}
 }
 
 #endif

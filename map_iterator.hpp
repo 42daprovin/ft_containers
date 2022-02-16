@@ -19,6 +19,10 @@ namespace ft {
 			node<value_type> *	right;
 			value_type 			data;	
 			
+			private:
+				
+				node<value_type> * useless;
+			
 		};
 
 	template < class T >
@@ -63,7 +67,7 @@ namespace ft {
 			public:
 				typedef std::bidirectional_iterator_tag			iterator_category;
 				typedef T										value_type;
-				typedef ptrdiff_t								difference_type;
+				typedef std::ptrdiff_t								difference_type;
 				typedef const T*										pointer;
 				typedef const T&										reference;
 
@@ -82,8 +86,8 @@ namespace ft {
 				const_m_iterator<T> &		operator--();
 				const_m_iterator<T>		operator--(int);
 
-				reference	operator*() { return this->_data->data; }
-				pointer		operator->() { return &(operator*()); }
+				reference	operator*() const { return this->_data->data; }
+				pointer		operator->() const { return &(operator*()); }
 
 				const ft::node<value_type> *		base() const { return _data; }
 
@@ -98,7 +102,7 @@ namespace ft {
 			public:
 				typedef std::bidirectional_iterator_tag			iterator_category;
 				typedef T										value_type;
-				typedef ptrdiff_t								difference_type;
+				typedef std::ptrdiff_t								difference_type;
 				typedef T*										pointer;
 				typedef T&										reference;
 				typedef ft::const_m_iterator<T>					const_iterator;
@@ -115,8 +119,8 @@ namespace ft {
 				m_iterator<T> &		operator--();
 				m_iterator<T>		operator--(int);
 
-				reference	operator*();
-				pointer		operator->() { return &(operator*()); }
+				reference	operator*() const ;
+				pointer		operator->() const { return &(operator*()); }
 
 				ft::node<value_type> *		base() const { return _data; }
 
@@ -133,7 +137,7 @@ namespace ft {
 //..................................Access.......................................
 
 	template < class T >
-		typename m_iterator<T>::reference	m_iterator<T>::operator*()
+		typename m_iterator<T>::reference	m_iterator<T>::operator*() const
 		{
 			return this->_data->data; //nombres caca cambiar
 		}

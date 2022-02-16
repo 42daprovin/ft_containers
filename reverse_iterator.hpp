@@ -37,7 +37,9 @@ namespace ft{
 				}
 				reference	operator*() const
 				{
-					return *(_it - 1);
+					iterator_type	tmp = _it;
+					--tmp;
+					return *(tmp);
 				}
 				reference	operator[](difference_type n) const
 				{
@@ -206,7 +208,6 @@ namespace ft{
 		{
 			return (rhs.base() - lhs.base());
 		}
-
 
 }
 
