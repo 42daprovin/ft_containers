@@ -6,7 +6,7 @@
 /*   By: daprovin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 17:05:40 by daprovin          #+#    #+#             */
-/*   Updated: 2022/02/10 15:11:52 by daprovin         ###   ########.fr       */
+/*   Updated: 2022/02/17 00:11:06 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,9 @@
 # include <iostream>
 # include <memory>
 # include <stdexcept>
-# include "Vector_Iterator.hpp"
-# include "is_integral.hpp"
-# include "enable_if.hpp"
-# include "iterator_traits.hpp"
-# include "reverse_iterator.hpp"
-# include "algorithm.hpp"
+# include "vector_iterator.hpp"
+# include "iterator_utils.hpp"
+# include "common_utils.hpp"
 
 namespace ft{
 
@@ -47,9 +44,9 @@ namespace ft{
 
 				explicit vector(size_type n, const value_type & val = value_type()) : _elems(NULL), _first_free(NULL), _end(NULL) 
 				{
-				reallocate(n);
-				for (size_t i = 0; i < n; i++)
-					push_back(val);		
+					reallocate(n);
+					for (size_t i = 0; i < n; i++)
+						push_back(val);		
 				}
 
 				template < class InputIterator >
@@ -469,6 +466,7 @@ namespace ft{
 
 								while (_elems != _first_free)
 									_alloc.destroy(--_first_free);
+								_alloc.deallocate(_elems, oldCapacity);
 
 							}
 							else

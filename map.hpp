@@ -2,13 +2,10 @@
 # define MAP_HPP
 
 # include <memory>
-# include <utility>
-# include <functional>
 # include <iostream>
 # include "map_iterator.hpp"
-# include "iterator_traits.hpp"
-# include "reverse_iterator.hpp"
-# include "algorithm.hpp"
+# include "iterator_utils.hpp"
+# include "common_utils.hpp"
 
 namespace ft {
 
@@ -104,6 +101,8 @@ namespace ft {
 					clear();
 					node_allocator_type(_alloc).destroy(_hipo_end);
 					node_allocator_type(_alloc).deallocate(_hipo_end, 1);
+					node_allocator_type(_alloc).destroy(_hipo_begin);
+					node_allocator_type(_alloc).deallocate(_hipo_begin, 1);
 				}
 
 //........................................Operator =..................................................

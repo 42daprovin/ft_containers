@@ -1,22 +1,23 @@
 #include "map.hpp"
-#include "algorithm.hpp"
 #include <map>
 
-#ifndef NAMESPACE_TYPE
-# define NAMESPACE_TYPE ft
+#ifdef STD
+	using namespace std;
+#else
+	using namespace ft;
 #endif
 
 int		main()
 {
 	std::cout << "..............Equal_range..............." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
+		map<char,int> mymap;
 
 		mymap['a']=10;
 		mymap['b']=20;
 		mymap['c']=30;
 
-		NAMESPACE_TYPE::pair<NAMESPACE_TYPE::map<char,int>::iterator,NAMESPACE_TYPE::map<char,int>::iterator> ret;
+		pair<map<char,int>::iterator,map<char,int>::iterator> ret;
 		ret = mymap.equal_range('b');
 
 		std::cout << "lower bound points to: ";
@@ -29,8 +30,8 @@ int		main()
 
 	std::cout << ".......Lower_bound / Upper_bound........" << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
-		NAMESPACE_TYPE::map<char,int>::iterator itlow,itup;
+		map<char,int> mymap;
+		map<char,int>::iterator itlow,itup;
 
 		mymap['a']=20;
 		mymap['b']=40;
@@ -44,14 +45,14 @@ int		main()
 		mymap.erase(itlow,itup);        // erases [itlow,itup)
 
 		// print content:
-		for (NAMESPACE_TYPE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+		for (map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
 			std::cout << it->first << " => " << it->second << '\n';
 
 	}
 
 	std::cout << "...............Count................." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
+		map<char,int> mymap;
 		char c;
 
 		mymap ['a']=101;
@@ -71,8 +72,8 @@ int		main()
 
 	std::cout << "...............Find.................." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
-		NAMESPACE_TYPE::map<char,int>::iterator it;
+		map<char,int> mymap;
+		map<char,int>::iterator it;
 
 		mymap['a']=50;
 		mymap['b']=100;
@@ -93,7 +94,7 @@ int		main()
 
 	std::cout << ".............Value_comp.............." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
+		map<char,int> mymap;
 
 		mymap['x']=1001;
 		mymap['y']=2002;
@@ -101,9 +102,9 @@ int		main()
 
 		std::cout << "mymap contains:\n";
 
-		NAMESPACE_TYPE::pair<char,int> highest = *mymap.rbegin();          // last element
+		pair<char,int> highest = *mymap.rbegin();          // last element
 
-		NAMESPACE_TYPE::map<char,int>::iterator it = mymap.begin();
+		map<char,int>::iterator it = mymap.begin();
 		do {
 			std::cout << it->first << " => " << it->second << '\n';
 		} while ( mymap.value_comp()(*it++, highest) );
@@ -111,9 +112,9 @@ int		main()
 
 	std::cout << "..............Key_comp..............." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
+		map<char,int> mymap;
 
-		NAMESPACE_TYPE::map<char,int>::key_compare mycomp = mymap.key_comp();
+		map<char,int>::key_compare mycomp = mymap.key_comp();
 
 		mymap['a']=100;
 		mymap['b']=200;
@@ -123,7 +124,7 @@ int		main()
 
 		char highest = mymap.rbegin()->first;     // key value of last element
 
-		NAMESPACE_TYPE::map<char,int>::iterator it = mymap.begin();
+		map<char,int>::iterator it = mymap.begin();
 		do {
 			std::cout << it->first << " => " << it->second << '\n';
 		} while ( mycomp((*it++).first, highest) );
@@ -133,14 +134,14 @@ int		main()
 
 	std::cout << "...............Clear................." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
+		map<char,int> mymap;
 
 		mymap['x']=100;
 		mymap['y']=200;
 		mymap['z']=300;
 
 		std::cout << "mymap contains:\n";
-		for (NAMESPACE_TYPE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+		for (map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
 			std::cout << it->first << " => " << it->second << '\n';
 
 		mymap.clear();
@@ -148,14 +149,14 @@ int		main()
 		mymap['b']=2202;
 
 		std::cout << "mymap contains:\n";
-		for (NAMESPACE_TYPE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+		for (map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
 			std::cout << it->first << " => " << it->second << '\n';
 
 	}
 
 	std::cout << "...............Swap.................." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> foo,bar;
+		map<char,int> foo,bar;
 
 		foo['x']=100;
 		foo['y']=200;
@@ -167,18 +168,18 @@ int		main()
 		foo.swap(bar);
 
 		std::cout << "foo contains:\n";
-		for (NAMESPACE_TYPE::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+		for (map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
 			std::cout << it->first << " => " << it->second << '\n';
 
 		std::cout << "bar contains:\n";
-		for (NAMESPACE_TYPE::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+		for (map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
 			std::cout << it->first << " => " << it->second << '\n';
 	}
 
 	std::cout << "...............Erase................." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
-		NAMESPACE_TYPE::map<char,int>::iterator it;
+		map<char,int> mymap;
+		map<char,int>::iterator it;
 
 		// insert some values:
 		mymap['a']=10;
@@ -203,26 +204,26 @@ int		main()
 	}
 	std::cout << "..............Insert................." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
+		map<char,int> mymap;
 
 		// first insert function version (single parameter):
-		mymap.insert ( NAMESPACE_TYPE::pair<char,int>('a',100) );
-		mymap.insert ( NAMESPACE_TYPE::pair<char,int>('z',200) );
+		mymap.insert ( pair<char,int>('a',100) );
+		mymap.insert ( pair<char,int>('z',200) );
 
-		NAMESPACE_TYPE::pair<NAMESPACE_TYPE::map<char,int>::iterator,bool> ret;
-		ret = mymap.insert ( NAMESPACE_TYPE::pair<char,int>('z',500) );
+		pair<map<char,int>::iterator,bool> ret;
+		ret = mymap.insert ( pair<char,int>('z',500) );
 		if (ret.second==false) {
 			std::cout << "element 'z' already existed";
 			std::cout << " with a value of " << ret.first->second << '\n';
 		}
 
 		// second insert function version (with hint position):
-		NAMESPACE_TYPE::map<char,int>::iterator it = mymap.begin();
-		mymap.insert (it, NAMESPACE_TYPE::pair<char,int>('b',300));  // max efficiency inserting
-		mymap.insert (it, NAMESPACE_TYPE::pair<char,int>('c',400));  // no max efficiency inserting
+		map<char,int>::iterator it = mymap.begin();
+		mymap.insert (it, pair<char,int>('b',300));  // max efficiency inserting
+		mymap.insert (it, pair<char,int>('c',400));  // no max efficiency inserting
 
 		// third insert function version (range insertion):
-		NAMESPACE_TYPE::map<char,int> anothermap;
+		map<char,int> anothermap;
 		anothermap.insert(mymap.begin(),mymap.find('c'));
 
 		// showing contents:
@@ -238,7 +239,7 @@ int		main()
 
 	std::cout << ".............Operator[].............." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,std::string> mymap;
+		map<char,std::string> mymap;
 
 		mymap['a']="an element";
 		mymap['b']="another element";
@@ -255,7 +256,7 @@ int		main()
 	std::cout << "..............Max_Size..............." << std::endl << std::endl;
 	{
 		int i;
-		NAMESPACE_TYPE::map<int,int> mymap;
+		map<int,int> mymap;
 
 		if (mymap.max_size()>1000)
 		{
@@ -268,7 +269,7 @@ int		main()
 
 	std::cout << "...............Size.................." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
+		map<char,int> mymap;
 		mymap['a']=101;
 		mymap['b']=202;
 		mymap['c']=302;
@@ -277,7 +278,7 @@ int		main()
 	}
 	std::cout << "............Empty....................." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
+		map<char,int> mymap;
 
 		mymap['a']=10;
 		mymap['b']=20;
@@ -292,43 +293,43 @@ int		main()
 	}
 	std::cout << "..........Reverse Iterators..........." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
+		map<char,int> mymap;
 
 		mymap['x'] = 100;
 		mymap['y'] = 200;
 		mymap['z'] = 300;
 
 		// show content:
-		NAMESPACE_TYPE::map<char,int>::reverse_iterator rit;
+		map<char,int>::reverse_iterator rit;
 		for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
 			std::cout << rit->first << " => " << rit->second << '\n';
 
 	}
 	std::cout << "..............Iterators..............." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
+		map<char,int> mymap;
 
 		mymap['b'] = 100;
 		mymap['a'] = 200;
 		mymap['c'] = 300;
 
 		// show content:
-		for (NAMESPACE_TYPE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+		for (map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
 			std::cout << it->first << " => " << it->second << '\n';
 
 	}
 
 	std::cout << "............Operator=............" << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> first;
-		NAMESPACE_TYPE::map<char,int> second;
+		map<char,int> first;
+		map<char,int> second;
 
 		first['x']=8;
 		first['y']=16;
 		first['z']=32;
 
 		second=first;                // second now contains 3 ints
-		first=NAMESPACE_TYPE::map<char,int>();  // and first is now empty
+		first=map<char,int>();  // and first is now empty
 
 		std::cout << "Size of first: " << first.size() << '\n';
 		std::cout << "Size of second: " << second.size() << '\n';
@@ -336,8 +337,8 @@ int		main()
 
 	std::cout << "...........Erase..........." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
-		NAMESPACE_TYPE::map<char,int>::iterator it;
+		map<char,int> mymap;
+		map<char,int>::iterator it;
 
 		// insert some values:
 		mymap['a']=10;
@@ -362,8 +363,8 @@ int		main()
 
 	std::cout << "..........Upper_bound and Lower_bound.........." << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
-		NAMESPACE_TYPE::map<char,int>::iterator itlow,itup;
+		map<char,int> mymap;
+		map<char,int>::iterator itlow,itup;
 
 		mymap['a']=20;
 		mymap['b']=40;
@@ -377,19 +378,19 @@ int		main()
 		mymap.erase(itlow,itup);        // erases [itlow,itup)
 
 		// print content:
-		for (NAMESPACE_TYPE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+		for (map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
 			std::cout << it->first << " => " << it->second << '\n';
 	}
 
 	std::cout << "..............Equal_range............" << std::endl << std::endl;
 	{
-		NAMESPACE_TYPE::map<char,int> mymap;
+		map<char,int> mymap;
 
 		mymap['a']=10;
 		mymap['b']=20;
 		mymap['c']=30;
 
-		NAMESPACE_TYPE::pair<NAMESPACE_TYPE::map<char,int>::iterator,NAMESPACE_TYPE::map<char,int>::iterator> ret;
+		pair<map<char,int>::iterator,map<char,int>::iterator> ret;
 		ret = mymap.equal_range('b');
 
 		std::cout << "lower bound points to: ";

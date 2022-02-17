@@ -3,63 +3,64 @@
 
 # include <iostream>
 # include <iterator>
+# include "common_utils.hpp"
 
 namespace ft {
 
-	template < class T >
-		struct node
-		{
-			typedef T									value_type;
+/* 	template < class T > */
+/* 		struct node */
+/* 		{ */
+/* 			typedef T									value_type; */
 
-			node() : parent(NULL), left(NULL), right(NULL) {}
-			node(const value_type & val) : parent(NULL), left(NULL), right(NULL), data(val) {}
+/* 			node() : parent(NULL), left(NULL), right(NULL) {} */
+/* 			node(const value_type & val) : parent(NULL), left(NULL), right(NULL), data(val) {} */
 
-			node<value_type> *	parent;
-			node<value_type> *	left;
-			node<value_type> *	right;
-			value_type 			data;	
+/* 			node<value_type> *	parent; */
+/* 			node<value_type> *	left; */
+/* 			node<value_type> *	right; */
+/* 			value_type 			data; */	
 			
-			private:
+/* 			private: */
 				
-				node<value_type> * useless;
+/* 				node<value_type> * useless; */
 			
-		};
+/* 		}; */
 
-	template < class T >
-		ft::node<T> *	most_left(ft::node<T> * _node)
-		{
-			if (_node->left != NULL)	
-				return most_left(_node->left);
-			else
-				return _node;
-		}
+/* 	template < class T > */
+/* 		ft::node<T> *	most_left(ft::node<T> * _node) */
+/* 		{ */
+/* 			if (_node->left != NULL) */	
+/* 				return most_left(_node->left); */
+/* 			else */
+/* 				return _node; */
+/* 		} */
 
-	template < class T>
-		const ft::node<T> * most_left(const ft::node<T> * _node)
-		{
-			if (_node->left != NULL)	
-				return most_left(_node->left);
-			else
-				return _node;
-		}
+/* 	template < class T> */
+/* 		const ft::node<T> * most_left(const ft::node<T> * _node) */
+/* 		{ */
+/* 			if (_node->left != NULL) */	
+/* 				return most_left(_node->left); */
+/* 			else */
+/* 				return _node; */
+/* 		} */
 
-	template < class T >
-		ft::node<T> *	most_right(ft::node<T> * _node)
-		{
-			if (_node->right != NULL)
-				return most_right(_node->right);
-			else
-				return _node;
-		}
+/* 	template < class T > */
+/* 		ft::node<T> *	most_right(ft::node<T> * _node) */
+/* 		{ */
+/* 			if (_node->right != NULL) */
+/* 				return most_right(_node->right); */
+/* 			else */
+/* 				return _node; */
+/* 		} */
 
-	template < class T >
-		const ft::node<T> *	most_right(const ft::node<T> * _node)
-		{
-			if (_node->right != NULL)
-				return most_right(_node->right);
-			else
-				return _node;
-		}
+/* 	template < class T > */
+/* 		const ft::node<T> *	most_right(const ft::node<T> * _node) */
+/* 		{ */
+/* 			if (_node->right != NULL) */
+/* 				return most_right(_node->right); */
+/* 			else */
+/* 				return _node; */
+/* 		} */
 
 	template < class T >
 		class const_m_iterator
