@@ -15,27 +15,27 @@ namespace ft {
 
 			public:
 				
-				explicit stack(const container_type & ctnr = container_type()) : _ctnr(ctnr) {}
+				explicit stack(const container_type & ctnr = container_type()) : c(ctnr) {}
 
-				bool	empty() const { return _ctnr.empty(); }
-				size_type	size() const { return _ctnr.size(); }
-				value_type &	top() { return _ctnr.back(); }
-				const value_type &	top() const { return _ctnr.back(); }
-				void	push(const value_type & val) { _ctnr.push_back(val); }
-				void	pop() { _ctnr.pop_back(); }
+				bool	empty() const { return c.empty(); }
+				size_type	size() const { return c.size(); }
+				value_type &	top() { return c.back(); }
+				const value_type &	top() const { return c.back(); }
+				void	push(const value_type & val) { c.push_back(val); }
+				void	pop() { c.pop_back(); }
 
-			private:
+			protected:
 
-				container_type	_ctnr;
+				container_type	c;
 
 //..................................friend non-member relation operators......................................
 
-			friend bool operator==(const stack & lhs, const stack & rhs) { return lhs._ctnr == rhs._ctnr; }
-			friend bool operator!=(const stack & lhs, const stack & rhs) { return lhs._ctnr != rhs._ctnr; }
-			friend bool operator<=(const stack & lhs, const stack & rhs) { return lhs._ctnr <= rhs._ctnr; }
-			friend bool operator>=(const stack & lhs, const stack & rhs) { return lhs._ctnr >= rhs._ctnr; }
-			friend bool operator>(const stack & lhs, const stack & rhs) { return lhs._ctnr > rhs._ctnr; }
-			friend bool operator<(const stack & lhs, const stack & rhs) { return lhs._ctnr < rhs._ctnr; }
+			friend bool operator==(const stack & lhs, const stack & rhs) { return lhs.c == rhs.c; }
+			friend bool operator!=(const stack & lhs, const stack & rhs) { return lhs.c != rhs.c; }
+			friend bool operator<=(const stack & lhs, const stack & rhs) { return lhs.c <= rhs.c; }
+			friend bool operator>=(const stack & lhs, const stack & rhs) { return lhs.c >= rhs.c; }
+			friend bool operator>(const stack & lhs, const stack & rhs) { return lhs.c > rhs.c; }
+			friend bool operator<(const stack & lhs, const stack & rhs) { return lhs.c < rhs.c; }
 		};
 
 }
